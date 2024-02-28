@@ -1,5 +1,4 @@
 ﻿#include<iostream>
-#include<list>
 #include<limits>
 #include <cmath>
 using namespace std;
@@ -38,37 +37,34 @@ int main()
 	do 
 	{
 		long long septenaryNum;
-		list<int> septenaryNumList;
-		long long decimalNum = 0;
+		long long decimalNum;
 		cout << "\nPlease, enter a non-negative number in the septenary system >> ";
 		cin >> septenaryNum;
 
 		bool flag = true;
 		while (flag)
 		{
+			decimalNum = 0;
 			if (!cin.fail() && septenaryNum >= 0 && cin.peek() == '\n') // проверка на корректность ввода
 				flag = false;
 
-			if (!flag) // если ввод корректен
+			if (!flag) // если ввод корректен то проверяем на соответствие семеричной системе
 			{
-				bool septenarySystemFlag = true; // флаг соответсвия семеричной системе
-				// проверка на соответствие семеричной системе
-				while (static_cast<int>(log10(septenaryNum)) + 1 > 0 && septenarySystemFlag)
+				int position = 0;
+				while (septenaryNum > 0 && !flag)
 				{
 					int digit = septenaryNum % 10; // получаем последнюю цифру числа
 					if (digit > 6)
 					{
-						septenarySystemFlag = false;
+						flag = true;
 					}
 					else
 					{
-						septenaryNumList.push_back(digit);
+						decimalNum += digit * pow(7, position); // переводим цифру в десятичную систему и добавляем к десятичному числу
 						septenaryNum /= 10; // удаляем последнюю цифру числа
-						// получается список цифр числа в обратном порядке
+						position++;
 					}
 				}
-
-				septenarySystemFlag ? 1 : flag = true;
 			}
 			
 			if (flag)
@@ -78,11 +74,6 @@ int main()
 				cin >> septenaryNum;
 			}
 
-		}
-
-		for (int i = 0; i < septenaryNumList.size(); i++)
-		{
-			decimalNum += *next(septenaryNumList.begin(), i) * pow(7, i);
 		}
 
 		cout << "Answer: " << decimalNum << endl;
